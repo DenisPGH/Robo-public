@@ -4,6 +4,7 @@ import numpy as np
 from PIL import ImageGrab
 import time
 import pyttsx3
+
 speaker = pyttsx3.init()
 speaker.setProperty("rate", 150)
 speaker.setProperty("voice", 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\TTS_MS_EN-US_ZIRA_11.0')
@@ -11,7 +12,8 @@ speaker.setProperty("voice", 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\V
 
 
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Users\\Owner\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe'
-img = cv2.imread('a.jpg')
+#img = cv2.imread('1.png')
+img = cv2.imread('d.jpg')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 
@@ -24,7 +26,7 @@ letter='letter'
 x='x'
 y='y'
 for b in boxes.splitlines():
-    #print(b)
+    print(b)
     b = b.split(' ')
     #print(b[0])
     all_y_coord.append(b[2])
@@ -67,8 +69,13 @@ for each_y in first_most_y_coordiantes:
 
 sentense=[''.join(word) for _,word in words.items()]
 
+my_words=['I','want','you']
+
+
+
 text=f"{len(sentense)} found sentenses. They are: {', '.join(sentense)}"
-speaker.say(text)
-speaker.runAndWait()
+# speaker.say(text)
+# speaker.runAndWait()
+print(sentense)
 
 
