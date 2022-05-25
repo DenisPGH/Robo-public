@@ -8,6 +8,11 @@ from django.views.decorators import gzip
 class IndexView(view_dj.TemplateView):
     template_name = 'index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['start'] = True
+        return context
+
 
 
 
