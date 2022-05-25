@@ -20,12 +20,32 @@ class VideoCamera(object):
         return jpeg.tobytes()
 
     def update(self):
-        while True:
-            (self.grabbed, self.frame) = self.video.read()
+        try:
+            while True:
+                (self.grabbed, self.frame) = self.video.read()
+                if not self.grabbed:
+                    break
+                    #print("not grabbed")
+        except:
+            #print("break update")
+            self.video.release()
+            cv2.destroyAllWindows()
+
+    def stop(self):
+        return self.video.release()
 
 def gen(camera):
     while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n'
-               )
+        try:
+            frame = camera.get_frame()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n'
+                   )
+        except:
+            #print("break in gen cam")
+            VideoCamera.stop(camera)
+            cv2.destroyAllWindows()
+            break
+
+
+
