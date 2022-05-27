@@ -4,11 +4,25 @@ import numpy as np
 import pyttsx3
 from PIL import ImageGrab
 import time
+import re
+pattern=r"(?P<num>([A-Z 0-9]{6,10}))"
 speaker = pyttsx3.init()
 speaker.setProperty("rate", 150)
 speaker.setProperty("voice", 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\TTS_MS_EN-US_ZIRA_11.0')
 
+"""
+a3456rv
+EU RO 2013
+BC BA 301
+A 111111 
+B 2390 F
+D 1111111  
+CC 2390 MB
+123 Х 456
 
+Good only from 2-3m and good light
+
+"""
 
 
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Users\\Owner\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe'
@@ -26,7 +40,7 @@ while True:
     _,img = cap.read()
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Convert the image to gray scale
     ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)  # Performing OTSU threshold
-    rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (18, 18))  # 10,10
+    rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (18, 18))  # 10,10 18
     dilation = cv2.dilate(thresh1, rect_kernel, iterations=1)
     contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL,
                                            cv2.CHAIN_APPROX_NONE)
@@ -38,8 +52,21 @@ while True:
         text = pytesseract.image_to_string(cropped)
 
         print(text)
-        speaker.say(text)
-        speaker.runAndWait()
+        valid_numers=re.finditer(pattern,text)
+        if not valid_numers:
+            continue
+        for each_nummern in valid_numers:
+            valid_=each_nummern.group('num')
+            print(valid_)
+            speaker.say(valid_)
+            speaker.runAndWait()
+
+        #cv2.imshow("Result", img)
+        #cv2.waitKey(1)
+
+
+
+
 
     # #img = captureScreen()
     # #DETECTING CHARACTERES
