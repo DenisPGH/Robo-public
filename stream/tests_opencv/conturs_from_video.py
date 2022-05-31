@@ -15,13 +15,13 @@ while True:
     imghsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     # lower_blue = np.array([110,50,50])
     # upper_blue = np.array([130,255,255])
-    lower_red_a = np.array([0, 50, 50])
-    upper_red_a = np.array([0, 255, 255])
+    lower_red_a = np.array([179, 250, 255])
+    upper_red_a = np.array([180, 250, 255])
     mask_red_a = cv2.inRange(imghsv, lower_red_a, upper_red_a)
-    lower_red_b = np.array([175, 50, 50])
-    upper_red_b = np.array([180, 255, 255])
+    lower_red_b = np.array([174, 50, 50])
+    upper_red_b = np.array([174, 255, 255])
     mask_red_b = cv2.inRange(imghsv, lower_red_b, upper_red_b)
-    mask_red = mask_red_a + mask_red_b
+    mask_red =  mask_red_a
 
     contours, _ = cv2.findContours(mask_red, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     im = np.copy(img)
@@ -41,7 +41,8 @@ while True:
         # rect = cv2.rectangle(im, (x, y), (x + w, y + h), (255, 255, 0), 2)
     cv2.drawContours(im, contours, -1, (0, 255, 0), 2)
     cv2.imshow("Result", im)
-    cv2.waitKey(1)
+    if cv2.waitKey(1)==ord('q'):
+        break
     # cv2.imwrite("contours_blue.png", im)
     # output_img = img.copy()
     # output_img[np.where(mask_red == 0)] = 0
@@ -52,4 +53,5 @@ while True:
     #
     # cv2.imshow('Contours', output_hsv)
     # cv2.waitKey(0)
-#cv2.destroyAllWindows()
+cap.release()
+cv2.destroyAllWindows()
