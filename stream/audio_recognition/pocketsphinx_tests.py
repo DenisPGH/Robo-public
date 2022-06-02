@@ -12,6 +12,7 @@ from pocketsphinx import LiveSpeech, get_model_path
 
 model_path = get_model_path()
 
+
 speech = LiveSpeech(
     verbose=False,
     sampling_rate=16000,
@@ -22,6 +23,14 @@ speech = LiveSpeech(
     lm=os.path.join(model_path, 'en-us.lm.bin'),
     dic=os.path.join(model_path, 'cmudict-en-us.dict')
 )
+
+"""
+fst = voxforge-de.fst
+hmm folder = model_parameters/voxforge.cd_cont_6000
+dictionary = cmusphinx-voxforge-de.dic
+language model = cmusphinx-voxforge-de.lm.gz
+"""
+
 print('Start recording....')
 for phrase in speech:
     print(phrase)
